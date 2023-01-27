@@ -1,17 +1,18 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import App from '../App';
+import { mockFetch } from '../utils/test-util';
 import { ncmData } from '../mock/ncmData';
-import { mockFetch } from '../utils/test-utils';
 
 let mockedFetch;
 
 beforeEach(() => {
-  mockedFetch = mockFetch();
+  mockedFetch = jest.spyOn(global, 'fetch')
+    .mockImplementation(mockFetch)
 });
 
-afterEach(() => {
-  mockedFetch.mockRestore();
+afterAll(() => {
+  mockedFetch.mockRestore()
 });
 
 describe('Test NcmRegisterList component', () => {
@@ -27,6 +28,7 @@ describe('Test NcmRegisterList component', () => {
 
   it('renders the ncm register list on page load', async () => {
     render(<App />);
+
 
     for (let i=0; i < ncmData.length; i += 1) {
       const mockedRegister = ncmData[i];

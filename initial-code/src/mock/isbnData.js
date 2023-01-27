@@ -1,4 +1,4 @@
-export const ISBNData = {
+export const isbnData = {
   isbn: "9788545702870",
   title: "Akira vol. 1",
   subtitle: "Part 1 - Tetsuo",

@@ -1,4 +1,4 @@
-export const ncmMockList = [
+export const ncmData = [
   {
     codigo: "0102.29.11",
     descricao: "Prenhes ou com cria ao pé",

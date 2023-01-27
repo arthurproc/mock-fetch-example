@@ -1,20 +1,20 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import App from '../App';
-import { cepData } from '../mock/cepData';
 import userEvent from '@testing-library/user-event';
-import { mockFetch } from '../utils/test-utils';
+import { mockFetch } from '../utils/test-util';
+import { cepData } from '../mock/cepData';
 
 let mockedFetch;
 
 beforeEach(() => {
-  mockedFetch = mockFetch();
+  mockedFetch = jest.spyOn(global, 'fetch')
+    .mockImplementation(mockFetch)
 });
 
-afterEach(() => {
-  mockedFetch.mockRestore();
+afterAll(() => {
+  mockedFetch.mockRestore()
 });
-
 
 describe('Test SearchCep tab', () => {
   it('renders CEP search results after form fill and submit', async () => {
@@ -39,25 +39,25 @@ describe('Test SearchCep tab', () => {
     userEvent.click(searchButton);
 
     const street = await screen.findByRole('heading', {
-      name: /avenida carlos drumond de andrade/i,
+      name: new RegExp(cepData.street, 'i'),
       level: 5
     });
 
     const cityAndNeighborhood = await screen.findByRole('heading', {
-      name: /itabira, bairro: centro/i,
+      name: new RegExp(`${cepData.city}, Bairro: ${cepData.neighborhood}`, 'i'),
       level: 5
     });
 
-    const state = await screen.findByText(/estado: mg/i);
+    const state = await screen.findByText(`Estado: ${cepData.state}`);
 
-    const coordinates = await screen.findByText(/coordenadas: \-19\.619913\/\-43\.2244008/i);
+    const coordinates = await screen.findByText(`Coordenadas: ${cepData.location.coordinates.latitude}/${cepData.location.coordinates.longitude}`);
 
     [street, cityAndNeighborhood, state, coordinates].forEach((element) => {
       expect(element).toBeInTheDocument();
     });
   });
 
-  it('calls ISBN endpoint after form fill and submit', async () => {
+  it('calls CEP endpoint after form fill and submit', async () => {
     render(<App />);
 
     const cepSearchTabButton = screen.getByRole('button', {
@@ -79,7 +79,7 @@ describe('Test SearchCep tab', () => {
     userEvent.click(searchButton);
 
     await screen.findByRole('heading', {
-      name: /avenida carlos drumond de andrade/i,
+      name: new RegExp(cepData.street, 'i'),
       level: 5
     });
 

@@ -21,7 +21,7 @@ describe('Test SearchBook tab', () => {
       name: /pesquisar/i
     });
 
-    userEvent.type(searchInput, '9788545702870');
+    userEvent.type(searchInput, '9788576082675');
 
     userEvent.click(searchButton);
 

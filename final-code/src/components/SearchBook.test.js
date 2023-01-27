@@ -1,17 +1,19 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
+import { isbnData } from '../mock/isbnData';
 import App from '../App';
 import userEvent from '@testing-library/user-event';
-import { mockFetch } from '../utils/test-utils';
+import { mockFetch } from '../utils/test-util';
 
 let mockedFetch;
 
 beforeEach(() => {
-  mockedFetch = mockFetch();
+  mockedFetch = jest.spyOn(global, 'fetch')
+    .mockImplementation(mockFetch)
 });
 
-afterEach(() => {
-  mockedFetch.mockRestore();
+afterAll(() => {
+  mockedFetch.mockRestore()
 });
 
 describe('Test SearchBook tab', () => {
@@ -32,25 +34,23 @@ describe('Test SearchBook tab', () => {
       name: /pesquisar/i
     });
 
-    userEvent.type(searchInput, '9788545702870');
+    userEvent.type(searchInput, '9788576082675');
 
     userEvent.click(searchButton);
 
     const title = await screen.findByRole('heading', {
-      name: /akira vol\. 1/i,
+      name: new RegExp(isbnData.title, 'i'),
       level: 5,
     });
 
     const subTitle = await screen.findByRole('heading', {
-      name: /assuntos: teenagers, comic books, strips, science fiction, graphic novels, comics & graphic novels, manga, science fiction/i,
+      name: new RegExp(`Assuntos: ${isbnData.subjects.join(', ')}`),
       level: 5,
     });
 
-    const synopsis = await screen.findByText(
-      /um dos marcos da ficção científica oriental que revolucionou a chegada dos mangás e da cultura pop japonesa no ocidente retorna em uma nova edição especial\. após atropelar uma criança de aparência estranha, tetsuo shima \(o melhor amigo de kaneda\), começa a sentir algumas reações anormais\. isso acaba chamando a atenção do governo que está projetando diversas experiências secretas e acabam sequestrando tetsuo\. nesta aventura cheia de ficção, kaneda entra em cena para salvar o amigo, enquanto uma terrível e monstruosa entidade ameaça despertar\./i
-    );
+    const synopsis = await screen.findByText(isbnData.synopsis);
 
-    const author = await screen.findByText(/de katsuhiro ōtomo/i);
+    const author = await screen.findByText(`De ${isbnData.authors.join(', ')}`);
 
     [title, subTitle, synopsis, author].forEach((element) => {
       expect(element).toBeInTheDocument();
@@ -79,10 +79,10 @@ describe('Test SearchBook tab', () => {
     userEvent.click(searchButton);
 
     await screen.findByRole('heading', {
-      name: /akira vol\. 1/i,
+      name: new RegExp(isbnData.title, 'i'),
       level: 5,
     });
 
-    expect(global.fetch).toHaveBeenCalledWith('https://brasilapi.com.br/api/isbn/v1/9788545702870');
+    expect(mockedFetch).toHaveBeenCalledWith('https://brasilapi.com.br/api/isbn/v1/9788545702870');
   });
 });
