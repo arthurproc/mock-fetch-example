@@ -1,23 +1,55 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState } from 'react';
+import ProductList from './components/ProductList';
+import SearchBook from './components/SearchBook';
+
+const tabs = {
+  products: 'products',
+  ISBNSearch: 'ISBNSearch'
+};
 
 function App() {
+  const [activeTab, setActiveTab] = useState(tabs.products);
+
+  const renderTabContent = () => {
+    switch(activeTab) {
+      case tabs.products: 
+        return (
+          <ProductList />
+        );
+      case tabs.ISBNSearch: 
+        return (
+          <SearchBook />
+        )
+      default:
+        return (
+          <p>Selecione uma aba</p>
+        )
+    }
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className='container'>
+      <ul className="nav nav-tabs">
+        <li className="nav-item">
+          <button
+            className={ `nav-link ${activeTab === tabs.products ? 'active' : ''}` }
+            onClick={ () => setActiveTab(tabs.products) }
+          >
+            Products
+          </button>
+        </li>
+        <li className="nav-item">
+          <button
+            className={ `nav-link ${activeTab === tabs.ISBNSearch ? 'active' : ''}` }
+            onClick={ () => setActiveTab(tabs.ISBNSearch) }
+          >
+            ISBN Search
+          </button>
+        </li>
+      </ul>
+      {
+        renderTabContent()
+      }
     </div>
   );
 }
