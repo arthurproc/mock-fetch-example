@@ -1,20 +1,20 @@
 import { useState } from 'react';
-import ProductList from './components/ProductList';
+import NcmRegisterList from './components/NcmRegisterList';
 import SearchBook from './components/SearchBook';
 
 const tabs = {
-  products: 'products',
+  ncmRegisters: 'ncmRegisters',
   ISBNSearch: 'ISBNSearch'
 };
 
 function App() {
-  const [activeTab, setActiveTab] = useState(tabs.products);
+  const [activeTab, setActiveTab] = useState(tabs.ncmRegisters);
 
   const renderTabContent = () => {
     switch(activeTab) {
-      case tabs.products: 
+      case tabs.ncmRegisters: 
         return (
-          <ProductList />
+          <NcmRegisterList />
         );
       case tabs.ISBNSearch: 
         return (
@@ -32,10 +32,10 @@ function App() {
       <ul className="nav nav-tabs">
         <li className="nav-item">
           <button
-            className={ `nav-link ${activeTab === tabs.products ? 'active' : ''}` }
-            onClick={ () => setActiveTab(tabs.products) }
+            className={ `nav-link ${activeTab === tabs.ncmRegisters ? 'active' : ''}` }
+            onClick={ () => setActiveTab(tabs.ncmRegisters) }
           >
-            Products
+            NCM Registers
           </button>
         </li>
         <li className="nav-item">

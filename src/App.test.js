@@ -4,19 +4,19 @@ import App from './App';
 import userEvent from '@testing-library/user-event';
 
 describe('Testing App.js', () => {
-  it('renders the navigation bar with productList selected', () => {
+  it('renders the navigation bar with ncmRegisterList selected', () => {
     render(<App />);
 
-    const productsTabButton = screen.getByRole('button', {
-      name: /products/i
-    });
+    const ncmRegistersTabButton = screen.getByRole('button', {
+      name: /ncm registers/i
+    })
   
     const ISBNSearchTabButton = screen.getByRole('button', {
       name: /isbn search/i
     });
 
-    expect(productsTabButton).toBeInTheDocument();
-    expect(productsTabButton).toHaveClass('active');
+    expect(ncmRegistersTabButton).toBeInTheDocument();
+    expect(ncmRegistersTabButton).toHaveClass('active');
 
     expect(ISBNSearchTabButton).toBeInTheDocument();
   });
@@ -24,9 +24,9 @@ describe('Testing App.js', () => {
   it('renders the right tab after clicking on tab link', () => {
     render(<App />);
 
-    const productsTabButton = screen.getByRole('button', {
-      name: /products/i
-    });
+    const ncmRegistersButton = screen.getByRole('button', {
+      name: /ncm registers/i
+    })
   
     const ISBNSearchTabButton = screen.getByRole('button', {
       name: /isbn search/i
@@ -40,7 +40,7 @@ describe('Testing App.js', () => {
       })
     ).toBeInTheDocument();
 
-    userEvent.click(productsTabButton);
+    userEvent.click(ncmRegistersButton);
 
     expect(
       screen.getByRole('heading', {

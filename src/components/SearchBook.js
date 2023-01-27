@@ -14,7 +14,7 @@ const SearchBook = () => {
   };
 
   return (
-    <div className='container'>
+    <div className='m-3'>
       <h1>Buscar ISBN</h1>
       <div className='row'>
         <form onSubmit={handleSubmit} className="form-inline my-2 my-lg-0">
